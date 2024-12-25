@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Student } from './student.model';
-import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, ReplaySubject, Subject, switchMap, throwError } from 'rxjs';
 
-const baseUrl = 'http://localhost:8080/ems/v1/student';
+//const baseUrl = 'http://localhost:8080/ems/v1/student';
+const baseUrl = 'http://localhost:3000/student'
 
 @Injectable({
   providedIn: 'any'
@@ -23,6 +24,14 @@ export class StudentService {
   }
 
   constructor(private http: HttpClient) { }
+
+  getStudentsBySearch(name: any): Observable<any> {
+    return this.http.get<any>(`${baseUrl}?name=${name}`).pipe(
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
 
   getAll(): Observable<Student[]> {
     return this.http.get<Student[]>(baseUrl);

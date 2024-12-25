@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { StudentService } from '../student.service';
 import { SelectionChangedEvent } from 'ag-grid-community';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-student-list',
@@ -16,66 +18,36 @@ export class StudentListComponent implements OnInit {
   deleteLabel: String = "Delete";
   deleteDisabled: Boolean = true;
 
+  studentList: any[] = [];
+
+  searchForm = new FormGroup({
+    name: new FormControl('')
+  });
+
   constructor(private studentService: StudentService, private route: ActivatedRoute,
     private router: Router) {
 
   }
 
   ngOnInit(): void {
-    //this.getStudentList();
-  }
-
-  studentListConfig: any = {
-    columnDefs: [
-      { headerName: 'First Name', field: 'firstName', flex: 1, filter: true },
-      { headerName: 'Last Name', field: 'lastName', flex: 1 }
-    ],
-    rowSelection: {
-      mode: 'singleRow'
-    },
-    pagination: true,
-    paginationPageSize: 200,
-    paginationPageSizeSelector: [200, 500, 1000],
-    rowData: []
-  };
-
-  selectedRows: any = [];
-
-  getStudentList(): void {
-    this.studentService.getAll().subscribe({
-      next: (data) => {
-        this.studentListConfig.rowData = data;
+    this.searchForm.controls.name.valueChanges.pipe(
+      debounceTime(300),
+      map(name => name),
+      distinctUntilChanged(),
+      switchMap(value => this.studentService.getStudentsBySearch(value))
+    ).subscribe({
+      next: (data: any) => {
+        this.studentList = data.data.students;
       },
       error: (e) => console.error(e)
     });
   }
 
-  onGridReady() {
-    this.getStudentList();
+  editSelectedStudent(): void {
+
   }
 
-  onSelectionChanged(event: SelectionChangedEvent) {
-    this.selectedRows = event.api.getSelectedNodes();
-    this.editDisabled = this.selectedRows.length === 1 ? false : true;
-    this.deleteDisabled = this.selectedRows.length === 1 ? false : true;
-  }
+  deleteSelectedStudent(): void {
 
-  editStudent() {
-    if (this.selectedRows[0]?.data.id)
-      this.studentService.setSelectedStudent(this.selectedRows[0]?.data);
-      this.router.navigate(['/student/form', this.selectedRows[0]?.data.id]);
-  }
-
-  onCellClicked(event: any) {
-    console.log("edit");
-  }
-
-  deleteSelectedStudent() {
-    this.studentService.delete(this.selectedRows[0]?.data.id).subscribe({
-      next: (data) => {
-        this.getStudentList();
-      },
-      error: (e) => console.error(e)
-    });
   }
 }

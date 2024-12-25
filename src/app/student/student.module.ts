@@ -5,7 +5,7 @@ import { StudentListComponent } from './student-list/student-list.component';
 import { StudentService } from './student.service';
 import { RouterModule, Routes } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavigationService } from '../shared/service/navigation.service';
@@ -40,6 +40,7 @@ const routes: Routes = [
     CommonModule,
     AgGridAngular,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
     RouterModule.forChild(routes)
