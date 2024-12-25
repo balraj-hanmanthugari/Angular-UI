@@ -1,0 +1,21 @@
+
+<div class="main-grid-container">
+    <div class="grid-header">
+        <div class="title">Enterprise Management System</div>
+    </div> 
+    <div class="grid-menu">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" (click)="setPresentElement('students')" href="#" routerLink="/student">Students</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="setPresentElement('teachers')" href="#" routerLink="/teacher">Teachers</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="setPresentElement('subjects')" href="#" routerLink="/subject">Subjects</a>
+            </li>
+          </ul>
+    </div> 
+    <div class="grid-body"><router-outlet /></div> 
+</div>
+<!-- *ngClass="getPresentElement('students')" -->

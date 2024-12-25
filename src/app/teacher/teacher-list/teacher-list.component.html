@@ -1,0 +1,38 @@
+<div class="teacher-list">
+    <div class="title">Teacher List</div>
+    <div class="crud-buttons">
+        <span>
+            <button type="button" class="btn btn-primary" routerLink="/teacher/form">{{addLabel}}</button>
+        </span>
+        <span>
+            <button type="button" class="btn btn-primary" (click)="editTeacher()"
+                [disabled]="editDisabled">{{editLabel}}</button>
+        </span>
+        <span>
+            <button type="button" class="btn btn-primary" (click)="deleteSelectedTeacher()"
+                [disabled]="deleteDisabled">{{deleteLabel}}</button>
+        </span>
+    </div>
+</div>
+<div class="file-upload">
+    <div>
+        <input class="form-control" type="file" multiple="false" accept="image/*" (change)="onChange($event)">
+        <button (click)="onUpload()" class="btn btn-success">Upload</button>
+    </div>
+    <div>
+        <img id="myimage" [src]='thumbnail' />
+    </div>
+</div>
+<div class="form-group">
+    <form [formGroup]="searchForm">
+        <input type="text" name="txtField" placeholder="Filter by id">
+    </form>
+</div>
+<ag-grid-angular 
+    style="width: 750px; height: 500px;" 
+    class="ag-theme-quartz"
+    [columnDefs]="teacherListConfig.columnDefs" [rowData]="teacherListConfig.rowData" [rowSelection]="teacherListConfig.rowSelection" 
+    [pagination]="teacherListConfig.pagination"
+    [paginationPageSize]="teacherListConfig.paginationPageSize"
+    [paginationPageSizeSelector]="teacherListConfig.paginationPageSizeSelector">
+</ag-grid-angular>

@@ -1,0 +1,44 @@
+<div class="teacher-form">
+    <div class="title">
+        <span *ngIf="!isEdit">{{addTitle}}</span>
+        <span *ngIf="isEdit">{{editTitle}}</span>
+    </div>
+    <ngb-alert type="success" (closed)="closeAlert('success')" [hidden]="hideSuccessMessage">Saved
+        successfully</ngb-alert>
+    <ngb-alert type="danger" (closed)="closeAlert('failure')" [hidden]="hideFailureMessage">Failed to save</ngb-alert>
+    <form [formGroup]="teacherForm" (ngSubmit)="saveTeacher()">
+        <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" formControlName="firstName">
+            <div *ngIf="teacherFormControls.firstName.invalid && teacherFormControls.firstName.touched">
+                <div *ngIf="teacherFormControls.firstName.errors?.['required']">First Name is required.</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" formControlName="lastName">
+            <div *ngIf="teacherFormControls.lastName.invalid && teacherFormControls.lastName.touched">
+                <div *ngIf="teacherFormControls.lastName.errors?.['required']">Last Name is required.</div>
+            </div>
+        </div>
+        <div formArrayName="skills">
+            <label>Skills</label><button class="btn btn-secondary" (click)="addSkill()">Add Skill</button>
+            <div *ngFor="let skill of skills.controls; let i=index">
+              <div>
+                <input type="text" formControlName="{{i}}">
+                <button class="btn btn-secondary" (click)="removeSkill(i)">Remove</button>
+              </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary"
+            [disabled]="teacherForm.invalid || teacherForm.untouched" [ngStyle]="{'margin-top':'20px'}">Submit</button>
+    </form>
+    <ng-multiselect-dropdown
+        [placeholder]="'custom placeholder'"
+        [settings]="dropdownSettings"
+        [data]="dropdownList"
+        [(ngModel)]="selectedItems"
+        (onSelect)="onItemSelect($event)"
+        (onSelectAll)="onSelectAll($event)">
+    </ng-multiselect-dropdown>
+</div>

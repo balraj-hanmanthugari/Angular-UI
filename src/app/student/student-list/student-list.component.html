@@ -1,0 +1,23 @@
+<div class="student-list">
+    <div class="title">Student List</div>
+    <div class="crud-buttons">
+        <span>
+            <button type="button" class="btn btn-primary" routerLink="/student/form">{{addLabel}}</button>
+        </span>
+        <span>
+            <button type="button" class="btn btn-primary" (click)="editStudent()"
+                [disabled]="editDisabled">{{editLabel}}</button>
+        </span>
+        <span>
+            <button type="button" class="btn btn-primary" (click)="deleteSelectedStudent()"
+                [disabled]="deleteDisabled">{{deleteLabel}}</button>
+        </span>
+    </div>
+</div>
+<ag-grid-angular style="width: 750px; height: 500px;" class="ag-theme-quartz"
+    [columnDefs]="studentListConfig.columnDefs" [rowData]="studentListConfig.rowData"
+    [rowSelection]="studentListConfig.rowSelection" [pagination]="studentListConfig.pagination"
+    (selectionChanged)="onSelectionChanged($event)" [paginationPageSize]="studentListConfig.paginationPageSize"
+    [paginationPageSizeSelector]="studentListConfig.paginationPageSizeSelector" (gridReady)="onGridReady()"
+    (cellClicked)="onCellClicked($event)">
+</ag-grid-angular>

@@ -1,0 +1,32 @@
+.main-grid-container {
+    display: grid;
+    grid-template-areas:
+        'header header header header header header'
+        'menu main main main main main';
+    gap: 10px;
+    padding: 10px;
+
+    .grid-header {
+        grid-area: header;
+        .title {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            border-bottom: 1px solid black;
+        }
+    }
+
+    .grid-menu {
+        grid-area: menu;
+        background-color: lightgray;
+        width: 200px;
+        .active {
+            background-color: white;
+        }
+    }
+
+    .grid-main {
+        grid-area: main;
+    }
+    
+}
