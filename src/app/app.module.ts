@@ -3,8 +3,8 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { commonInterceptorInterceptor } from './shared/Interceptor/common-interceptor.interceptor';
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { CommonInterceptor } from './shared/Interceptor/common.interceptor';
 
 @NgModule({
   declarations: [
@@ -16,9 +16,12 @@ import { commonInterceptorInterceptor } from './shared/Interceptor/common-interc
   ],
   providers: [
     provideClientHydration(),
-    provideHttpClient(
-      withInterceptors([commonInterceptorInterceptor]),
-    )
+    provideHttpClient(withFetch(), withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CommonInterceptor,
+      multi: true
+  }
   ],
   bootstrap: [AppComponent]
 })
