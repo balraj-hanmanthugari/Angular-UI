@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Student } from './student.model';
-import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, ReplaySubject, Subject, switchMap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, forkJoin, ReplaySubject, Subject, switchMap, throwError } from 'rxjs';
 
 //const baseUrl = 'http://localhost:8080/ems/v1/student';
 const baseUrl = 'http://localhost:3000/student'
@@ -51,5 +51,14 @@ export class StudentService {
 
   delete(id: any): Observable<any> {
     return this.http.delete(`${baseUrl}/${id}`);
+  }
+
+  forkJoinEx() {
+    let req1 = this.http.get(`${baseUrl}/1`);
+    let req2 = this.http.get(`${baseUrl}/2`);
+    forkJoin([req1, req2]).subscribe(([resp1, resp2]) => {
+      console.log(resp1);
+      console.log(resp2);
+    });
   }
 }
